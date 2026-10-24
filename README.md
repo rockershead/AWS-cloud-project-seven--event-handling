@@ -1,1 +1,1 @@
-`![Alt text](e-commerce_event_handling_aws.drawio.png)`
+![IMAGE_DESCRIPTION](https://app.diagrams.net/#G1UtF0afg4IsMTNY7tDoBP_fUYjE2DYIPK#%7B%22pageId%22%3A%22vAQUeqU224dhQzJgGcOd%22%7D)
