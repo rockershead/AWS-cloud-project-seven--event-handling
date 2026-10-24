@@ -1,4 +1,3 @@
-# AWS-cloud-project-seven--event-handling
+[](https://app.diagrams.net/#G1UtF0afg4IsMTNY7tDoBP_fUYjE2DYIPK#%7B%22pageId%22%3A%22vAQUeqU224dhQzJgGcOd%22%7D)
 
-<img width="1391" height="790" alt="e-commerce_event_handling_aws drawio (1)" src="https://github.com/user-attachments/assets/8d41b98a-c23b-49d3-b7be-363018c6cffe" />
 
