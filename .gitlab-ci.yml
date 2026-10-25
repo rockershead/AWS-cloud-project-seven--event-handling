@@ -1,0 +1,91 @@
+include:
+  - project: "devops6972650/ci-templates"
+    ref: "main"
+    file:
+      - common_jobs.yml
+
+stages:
+  - package
+  - deploy
+
+
+
+variables:
+  TERRAFORM_DIR: "terraform"
+  LAMBDA_DIR: "lambdas"
+  ZIP_FOLDER: "$CI_PROJECT_DIR/zip"
+
+.trigger_rule:
+    rules:
+      - changes:
+          - $TERRAFORM_DIR/**/*.tf
+          - $LAMBDA_DIR/**/*
+      - changes:
+          - README.md    # If only README.md changes, the job should not run
+        when: never
+      - changes:
+          - .gitlab-ci.yml    # If only gitlab.yml changes, the job should run on manual trigger
+        when: manual
+
+
+
+package_lambdas:
+  stage: package
+  image: registry.gitlab.com/devops6972650/base_image/python_image:1.0.0
+  rules:
+    - !reference [.trigger_rule, rules]
+  needs: ["lambda_tests"]
+  script:
+    - mkdir -p $ZIP_FOLDER  
+    - echo "Version is:$VERSION"
+    - NEEDS_PACKAGING=0
+    - |
+      for lambda_dir in "$CI_PROJECT_DIR/lambdas"/*; do
+        lambda_name=$(basename "$lambda_dir")
+        VERSION=$("$lambda_dir/version")
+        PACKAGE_URL="${CI_API_V4_URL}/projects/$CI_PROJECT_ID/packages/generic/my_package/${VERSION}/${lambda_name}.zip"
+        
+        
+        if curl --header "PRIVATE-TOKEN:$GITLAB_TOKEN" --head --silent --fail "$PACKAGE_URL"; then
+          echo "$lambda_name.zip already exists. Skipping..."
+        else
+          echo "$lambda_name.zip not found. Packaging..."
+          NEEDS_PACKAGING=1
+
+          mkdir -p "$lambda_dir/package"
+          pip3 install -r "$lambda_dir/requirements.txt" --target "$lambda_dir/package"
+          cp "$lambda_dir/$lambda_name.py" "$lambda_dir/package"
+
+          cd "$lambda_dir/package"
+          zip -r "$ZIP_FOLDER/$lambda_name.zip" .
+          curl --header "JOB-TOKEN:$CI_JOB_TOKEN" --upload-file "$ZIP_FOLDER/$lambda_name.zip" "${CI_API_V4_URL}/projects/$CI_PROJECT_ID/packages/generic/my_package/${VERSION}/${lambda_name}.zip"
+          cd "$CI_PROJECT_DIR"
+        fi
+      done
+    - if [ "$NEEDS_PACKAGING" -eq 0 ]; then echo "No new packages needed. Skipping..."; exit 0; fi
+ 
+   
+
+
+deploy_infra:
+  stage: deploy
+  image: 
+    name: registry.gitlab.com/devops6972650/base_image/terraform_image:1.0.0
+  rules:
+    - !reference [.trigger_rule, rules]
+  needs: ["package_lambdas"]
+  before_script:
+    - mkdir -p $ZIP_FOLDER
+    - |
+      for lambda_dir in $(ls lambdas); do
+        curl --header "PRIVATE-TOKEN:$GITLAB_TOKEN" -o "$ZIP_FOLDER/$lambda_dir.zip" "${CI_API_V4_URL}/projects/$CI_PROJECT_ID/packages/generic/my_package/${VERSION}/${lambda_dir}.zip"
+      done
+  script:
+    - cd $TERRAFORM_DIR
+    - echo "Initializing Terraform"
+    - terraform init -backend-config=backend.tfvars
+    - echo "terraform plan"
+    - terraform plan -out=tfplan
+    - echo "Applying Terraform configuration"
+    - terraform apply -auto-approve tfplan
+  
