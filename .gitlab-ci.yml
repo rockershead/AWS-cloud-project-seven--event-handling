@@ -34,7 +34,6 @@ package_lambdas:
   image: registry.gitlab.com/devops6972650/base_image/python_image:1.0.0
   rules:
     - !reference [.trigger_rule, rules]
-  needs: ["lambda_tests"]
   script:
     - mkdir -p $ZIP_FOLDER  
     - echo "Version is:$VERSION"
