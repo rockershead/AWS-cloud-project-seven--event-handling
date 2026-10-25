@@ -27,3 +27,21 @@ variable "event_handling_sort_key_name" {
   default     = "last_checked_in_ts"
 
 }
+
+variable "event_register_lambda_function_name" {
+  type        = string
+  description = "event register lambda"
+  default     = "EVENT_REGISTER_TF"
+}
+
+variable "runtime" {
+  type        = string
+  description = "runtime for python functions"
+  default     = "python3.10"
+}
+
+variable "event_register_lambda_timeout_value" {
+  type        = number
+  description = "timeout value for event register lambda"
+  default     = 30
+}

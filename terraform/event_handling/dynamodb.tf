@@ -19,7 +19,7 @@ resource "aws_dynamodb_table" "event_handling_table" {
   # Sort Key ("last_checked_in_ts")
   attribute {
   name = var.event_handling_sort_key_name
-  type = "S"
+  type = "N"
   }
 
 
