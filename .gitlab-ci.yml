@@ -46,9 +46,9 @@ package_lambdas:
         
         
         if curl --header "PRIVATE-TOKEN:$GITLAB_TOKEN" --head --silent --fail "$PACKAGE_URL"; then
-          echo "$lambda_name.zip already exists. Skipping..."
+          echo "$lambda_name.zip version $VERSION already exists. Skipping..."
         else
-          echo "$lambda_name.zip not found. Packaging..."
+          echo "$lambda_name.zip version $VERSION not found. Packaging..."
           NEEDS_PACKAGING=1
 
           mkdir -p "$lambda_dir/package"
