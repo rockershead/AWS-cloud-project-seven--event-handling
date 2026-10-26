@@ -14,7 +14,7 @@ resource "aws_api_gateway_deployment" "api_deployment" {
   # So that only when any of the API Gateway resources change, it will trigger a redeployment
   triggers = {
     redeployment = sha1(jsonencode([
-      sha1(file("${path.module}/create_api_gateway.tf"))
+      sha1(file("${path.module}/event_register_api_gateway.tf"))
     ]))
   }
 
