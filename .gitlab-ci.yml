@@ -38,7 +38,7 @@ package_lambdas:
     - mkdir -p $ZIP_FOLDER  
     - NEEDS_PACKAGING=0
     - |
-      for lambda_dir in "$CI_PROJECT_DIR/lambdas"/*; do
+      for lambda_dir in "$CI_PROJECT_DIR/$LAMBDA_DIR"/*; do
         lambda_name=$(basename "$lambda_dir")
         VERSION=$(cat "$lambda_dir/version")
         echo "Version is:$VERSION"
@@ -57,7 +57,7 @@ package_lambdas:
 
           cd "$lambda_dir/package"
           zip -r "$ZIP_FOLDER/$lambda_name.zip" .
-          curl --header "JOB-TOKEN:$CI_JOB_TOKEN" --upload-file "$ZIP_FOLDER/$lambda_name.zip" "${CI_API_V4_URL}/projects/$CI_PROJECT_ID/packages/generic/my_package/${VERSION}/${lambda_name}.zip"
+          curl --header "JOB-TOKEN:$CI_JOB_TOKEN" --upload-file "$ZIP_FOLDER/$lambda_name.zip" "$PACKAGE_URL"
           cd "$CI_PROJECT_DIR"
         fi
       done
@@ -66,26 +66,27 @@ package_lambdas:
    
 
 
-# deploy_infra:
-#   stage: deploy
-#   image: 
-#     name: registry.gitlab.com/devops6972650/base_image/terraform_image:1.0.0
-#   rules:
-#     - !reference [.trigger_rule, rules]
-#   needs: ["package_lambdas"]
-#   before_script:
-#     - mkdir -p $ZIP_FOLDER
-#     - |
-#       for lambda_dir in $(ls lambdas); do
-#         VERSION=$(cat "lambdas/$lambda_dir/version")
-#         curl --header "PRIVATE-TOKEN:$GITLAB_TOKEN" -o "$ZIP_FOLDER/$lambda_dir.zip" "${CI_API_V4_URL}/projects/$CI_PROJECT_ID/packages/generic/my_package/${VERSION}/${lambda_dir}.zip"
-#       done
-#   script:
-#     - cd $TERRAFORM_DIR
-#     - echo "Initializing Terraform"
-#     - terraform init -backend-config=backend.tfvars
-#     - echo "terraform plan"
-#     - terraform plan -out=tfplan
-#     - echo "Applying Terraform configuration"
-#     - terraform apply -auto-approve tfplan
+deploy_infra:
+  stage: deploy
+  image: 
+    name: registry.gitlab.com/devops6972650/base_image/terraform_image:1.0.0
+  rules:
+    - !reference [.trigger_rule, rules]
+  needs: ["package_lambdas"]
+  before_script:
+    - mkdir -p $ZIP_FOLDER
+    - |
+      for lambda_dir in "$CI_PROJECT_DIR/$LAMBDA_DIR"/*; do
+        VERSION=$(cat "$lambda_dir/version")
+        PACKAGE_URL="${CI_API_V4_URL}/projects/$CI_PROJECT_ID/packages/generic/my_package/${VERSION}/${lambda_dir}.zip"
+        curl --header "PRIVATE-TOKEN:$GITLAB_TOKEN" -o "$ZIP_FOLDER/$lambda_dir.zip" "$PACKAGE_URL"
+      done
+  script:
+    - cd $TERRAFORM_DIR
+    - echo "Initializing Terraform"
+    - terraform init -backend-config=backend.tfvars
+    - echo "terraform plan"
+    - terraform plan -out=tfplan
+    - echo "Applying Terraform configuration"
+    - terraform apply -auto-approve tfplan
   
