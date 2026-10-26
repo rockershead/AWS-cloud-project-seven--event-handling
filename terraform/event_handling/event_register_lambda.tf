@@ -3,7 +3,7 @@ resource "aws_lambda_function" "event_register_lambda" {
   source_code_hash = filebase64sha256("${abspath(path.cwd)}/../zip/event_register.zip")
   role             = aws_iam_role.event_register_lambda_role.arn
   function_name    = var.event_register_lambda_function_name
-  handler          = "event_register.handler"
+  handler          = "event_register.lambda_handler"
   runtime          = var.runtime
   timeout          = var.event_register_lambda_timeout_value
 
