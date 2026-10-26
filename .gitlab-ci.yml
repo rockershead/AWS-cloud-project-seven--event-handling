@@ -77,9 +77,10 @@ deploy_infra:
     - mkdir -p $ZIP_FOLDER
     - |
       for lambda_dir in "$CI_PROJECT_DIR/$LAMBDA_DIR"/*; do
+        lambda_name=$(basename "$lambda_dir")
         VERSION=$(cat "$lambda_dir/version")
-        PACKAGE_URL="${CI_API_V4_URL}/projects/$CI_PROJECT_ID/packages/generic/my_package/${VERSION}/${lambda_dir}.zip"
-        curl --header "PRIVATE-TOKEN:$GITLAB_TOKEN" -o "$ZIP_FOLDER/$lambda_dir.zip" "$PACKAGE_URL"
+        PACKAGE_URL="${CI_API_V4_URL}/projects/$CI_PROJECT_ID/packages/generic/my_package/${VERSION}/${lambda_name}.zip"
+        curl --header "PRIVATE-TOKEN:$GITLAB_TOKEN" -o "$ZIP_FOLDER/$lambda_name.zip" "$PACKAGE_URL"
       done
   script:
     - cd $TERRAFORM_DIR
