@@ -80,8 +80,11 @@ deploy_infra:
         lambda_name=$(basename "$lambda_dir")
         VERSION=$(cat "$lambda_dir/version")
         PACKAGE_URL="${CI_API_V4_URL}/projects/$CI_PROJECT_ID/packages/generic/my_package/${VERSION}/${lambda_name}.zip"
+        echo "Downloading package from $PACKAGE_URL"
         curl --header "PRIVATE-TOKEN:$GITLAB_TOKEN" -o "$ZIP_FOLDER/$lambda_name.zip" "$PACKAGE_URL"
       done
+    - ls -lrt
+    - ls -lrt $ZIP_FOLDER
   script:
     - cd $TERRAFORM_DIR
     - echo "Initializing Terraform"
