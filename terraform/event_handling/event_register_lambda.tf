@@ -1,6 +1,6 @@
 resource "aws_lambda_function" "event_register_lambda" {
-  filename         = "${abspath(path.cwd)}/../../zip/event_register_lambda.zip"
-  source_code_hash = filebase64sha256("${abspath(path.cwd)}/../../zip/event_register_lambda.zip")
+  filename         = "${abspath(path.cwd)}/../../zip/event_register.zip"
+  source_code_hash = filebase64sha256("${abspath(path.cwd)}/../../zip/event_register.zip")
   role             = aws_iam_role.event_register_lambda_role.arn
   function_name    = var.event_register_lambda_function_name
   handler          = "event_handling.handler"
