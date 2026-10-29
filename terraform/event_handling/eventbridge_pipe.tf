@@ -73,12 +73,13 @@ resource "aws_pipes_pipe" "event_handling_pipe" {
   role_arn = aws_iam_role.event_pipe_role.arn
   source   = aws_dynamodb_table.event_handling_table.stream_arn
   target   = aws_cloudwatch_event_bus.event_handling_bus.arn
-
-#   source_parameters {
-#     dynamodb_stream_parameters {
-#       starting_position = "LATEST"
-#       batch_size        = 10
-#     }
+  
+  // source parameter configuration for the DynamoDB stream is mandatory only for dynmodb stream
+  source_parameters {
+    dynamodb_stream_parameters {
+      starting_position = "LATEST"
+      batch_size        = 10
+    }
 
 #     filter_criteria {
 #       filter {
