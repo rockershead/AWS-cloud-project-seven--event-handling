@@ -45,3 +45,19 @@ variable "event_register_lambda_timeout_value" {
   description = "timeout value for event register lambda"
   default     = 30
 }
+
+variable "event_handling_event_bus_name" {
+
+  type        = string
+  description = "event bus name"
+  default     = "event-handling-bus"
+
+}
+
+variable "event_handling_pipe_name" {
+
+  type        = string
+  description = "event handling pipe name"
+  default     = "event-handling-pipe"
+
+}

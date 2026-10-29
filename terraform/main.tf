@@ -7,4 +7,6 @@ module "event_handling" {
   event_register_lambda_function_name = var.event_register_lambda_function_name
   runtime                             = var.runtime
   event_register_lambda_timeout_value = var.event_register_lambda_timeout_value
+  event_handling_event_bus_name       = var.event_handling_event_bus_name
+  event_handling_pipe_name            = var.event_handling_pipe_name
 }
