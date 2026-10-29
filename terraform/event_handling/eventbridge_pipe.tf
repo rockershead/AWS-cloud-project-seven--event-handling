@@ -80,7 +80,7 @@ resource "aws_pipes_pipe" "event_handling_pipe" {
       starting_position = "LATEST"
       batch_size        = 10
     }
-
+  }
 #     filter_criteria {
 #       filter {
 #         pattern = jsonencode({
