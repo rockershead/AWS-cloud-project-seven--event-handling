@@ -61,3 +61,15 @@ variable "event_handling_pipe_name" {
   default     = "event-handling-pipe"
 
 }
+
+variable "event_handling_sns_order_shipped_topic" {
+  type        = string
+  description = "SNS topic for order shipped events"
+  default     = "order-shipped-topic"
+}
+
+variable "event_handling_sns_checkout_topic" {
+  type        = string
+  description = "SNS topic for checkout events"
+  default     = "checkout-topic"
+}
