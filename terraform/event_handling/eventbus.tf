@@ -26,7 +26,7 @@ resource "aws_cloudwatch_event_rule" "checkout_sns_topic" {
 resource "aws_cloudwatch_event_target" "checkout_event_sns_topic_target" {
   rule      = aws_cloudwatch_event_rule.checkout_sns_topic.name
   event_bus_name = aws_cloudwatch_event_bus.event_handling_bus.name
-  arn       = aws_sns_topic.checkout__topic.arn
+  arn       = aws_sns_topic.checkout_topic.arn
   
 
   depends_on = [ aws_sns_topic.checkout_topic  ]
