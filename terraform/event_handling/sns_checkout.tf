@@ -1,4 +1,4 @@
-resource "aws_sns_topic" "checkout_project_topic" {
+resource "aws_sns_topic" "checkout_topic" {
     name = var.event_handling_sns_checkout_topic
    
 }
@@ -13,3 +13,4 @@ resource "aws_sns_topic" "checkout_project_topic" {
 
 
 
+// add subscription for the checkout topic

@@ -26,15 +26,15 @@ resource "aws_cloudwatch_event_rule" "checkout_sns_topic" {
 resource "aws_cloudwatch_event_target" "checkout_event_sns_topic_target" {
   rule      = aws_cloudwatch_event_rule.checkout_sns_topic.name
   event_bus_name = aws_cloudwatch_event_bus.event_handling_bus.name
-  arn       = aws_sns_topic.checkout_project_topic.arn
+  arn       = aws_sns_topic.checkout__topic.arn
   
 
-  depends_on = [ aws_sns_topic.checkout_project_topic  ]
+  depends_on = [ aws_sns_topic.checkout_topic  ]
 }
 
 ## permission for eventbus to sns
 resource "aws_sns_topic_policy" "checkout_topic" {
-  arn    = aws_sns_topic.checkout_project_topic.arn
+  arn    = aws_sns_topic.checkout_topic.arn
   policy = data.aws_iam_policy_document.sns_topic_policy_checkout.json
 }
 
@@ -48,7 +48,7 @@ data "aws_iam_policy_document" "sns_topic_policy_checkout" {
       identifiers = ["events.amazonaws.com"]
     }
 
-    resources = [aws_sns_topic.checkout_project_topic.arn]
+    resources = [aws_sns_topic.checkout_topic.arn]
 
     condition {
       test     = "ArnEquals"
@@ -85,17 +85,17 @@ resource "aws_cloudwatch_event_rule" "order_shipped_sns_topic" {
 
 
 resource "aws_cloudwatch_event_target" "order_shipped_event_sns_topic_target" {
-  rule      = aws_cloudwatch_event_rule.order_shipped_sns_topic.name
+  rule           = aws_cloudwatch_event_rule.order_shipped_sns_topic.name
   event_bus_name = aws_cloudwatch_event_bus.event_handling_bus.name
-  arn       = aws_sns_topic.order_shipped_project_topic.arn
+  arn            = aws_sns_topic.order_shipped_topic.arn
   
 
-  depends_on = [ aws_sns_topic.order_shipped_project_topic  ]
+  depends_on = [ aws_sns_topic.order_shipped_topic  ]
 }
 
 ## permission for eventbus to sns
 resource "aws_sns_topic_policy" "order_shipped_topic" {
-  arn    = aws_sns_topic.order_shipped_project_topic.arn
+  arn    = aws_sns_topic.order_shipped_topic.arn
   policy = data.aws_iam_policy_document.sns_topic_policy_order_shipped.json
 }
 
@@ -109,7 +109,7 @@ data "aws_iam_policy_document" "sns_topic_policy_order_shipped" {
       identifiers = ["events.amazonaws.com"]
     }
 
-    resources = [aws_sns_topic.order_shipped_project_topic.arn]
+    resources = [aws_sns_topic.order_shipped_topic.arn]
 
     condition {
       test     = "ArnEquals"
