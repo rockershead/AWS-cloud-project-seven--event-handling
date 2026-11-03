@@ -100,7 +100,7 @@ data "aws_iam_policy_document" "inventory_lambda_role_permissions" {
 }
 
 
-resource "aws_lambda_event_source_mapping" "event_source_mapping" {
+resource "aws_lambda_event_source_mapping" "inventory_event_source_mapping" {
     event_source_arn    = aws_sqs_queue.inventory_sqs_queue.arn
     function_name       = var.inventory_lambda_function_name
     batch_size          = 1

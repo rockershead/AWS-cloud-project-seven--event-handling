@@ -100,7 +100,7 @@ data "aws_iam_policy_document" "payment_lambda_role_permissions" {
 }
 
 
-resource "aws_lambda_event_source_mapping" "event_source_mapping" {
+resource "aws_lambda_event_source_mapping" "payment_event_source_mapping" {
     event_source_arn    = aws_sqs_queue.payment_sqs_queue.arn
     function_name       = var.payment_lambda_function_name
     batch_size          = 1
