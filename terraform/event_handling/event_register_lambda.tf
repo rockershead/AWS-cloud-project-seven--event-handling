@@ -5,7 +5,7 @@ resource "aws_lambda_function" "event_register_lambda" {
   function_name    = var.event_register_lambda_function_name
   handler          = "event_register.lambda_handler"
   runtime          = var.runtime
-  timeout          = var.event_register_lambda_timeout_value
+  timeout          = var.lambda_timeout_value
 
   description      = "Lambda to handle event registration"
 
