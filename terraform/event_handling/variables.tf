@@ -33,15 +33,27 @@ variable "event_register_lambda_function_name" {
   
 }
 
+variable "payment_lambda_function_name" {
+  type        = string
+  description = "payment lambda"
+  
+}
+
+variable "inventory_lambda_function_name" {
+  type        = string
+  description = "inventory lambda"
+  
+}
+
+
 variable "runtime" {
   type        = string
   description = "runtime for python functions"
 }
 
-variable "event_register_lambda_timeout_value" {
+variable "lambda_timeout_value" {
   type        = number
-  description = "timeout value for event register lambda"
- 
+  description = "timeout value for lambda functions"
 }
 
 variable "event_handling_event_bus_name" {
@@ -68,12 +80,5 @@ variable "event_handling_sns_order_shipped_topic" {
 variable "event_handling_sns_checkout_topic" {
   type        = string
   description = "SNS topic for checkout events"
-  
-}
-
-
-variable "lambda_timeout_value" {
-  type        = number
-  description = "timeout value for lambda functions"
   
 }

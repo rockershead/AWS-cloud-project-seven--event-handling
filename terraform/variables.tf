@@ -34,17 +34,30 @@ variable "event_register_lambda_function_name" {
   default     = "EVENT_REGISTER_TF"
 }
 
+variable "payment_lambda_function_name" {
+  type        = string
+  description = "payment lambda"
+  default     = "PAYMENT_TF"
+}
+
+variable "inventory_lambda_function_name" {
+  type        = string
+  description = "inventory lambda"
+  default     = "INVENTORY_TF"
+}
+
 variable "runtime" {
   type        = string
   description = "runtime for python functions"
   default     = "python3.10"
 }
 
-variable "event_register_lambda_timeout_value" {
+variable "lambda_timeout_value" {
   type        = number
-  description = "timeout value for event register lambda"
+  description = "timeout value for lambda functions"
   default     = 30
 }
+
 
 variable "event_handling_event_bus_name" {
 
@@ -72,10 +85,4 @@ variable "event_handling_sns_checkout_topic" {
   type        = string
   description = "SNS topic for checkout events"
   default     = "checkout-topic"
-}
-
-variable "lambda_timeout_value" {
-  type        = number
-  description = "timeout value for lambda functions"
-  default     = 30
 }
