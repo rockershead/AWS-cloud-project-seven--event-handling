@@ -55,7 +55,7 @@ variable "runtime" {
 variable "lambda_timeout_value" {
   type        = number
   description = "timeout value for lambda functions"
-  default     = 30
+  default     = 10
 }
 
 
@@ -85,4 +85,10 @@ variable "event_handling_sns_checkout_topic" {
   type        = string
   description = "SNS topic for checkout events"
   default     = "checkout-topic"
+}
+
+variable "order_ship_lambda_function_name" {
+  type        = string
+  description = "order ship lambda"
+  default     = "ORDER_SHIP_TF"
 }

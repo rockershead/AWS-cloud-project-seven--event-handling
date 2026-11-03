@@ -13,4 +13,5 @@ module "event_handling" {
   lambda_timeout_value                   = var.lambda_timeout_value
   payment_lambda_function_name           = var.payment_lambda_function_name
   inventory_lambda_function_name         = var.inventory_lambda_function_name
+  order_ship_lambda_function_name        = var.order_ship_lambda_function_name
 }

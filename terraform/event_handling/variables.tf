@@ -82,3 +82,9 @@ variable "event_handling_sns_checkout_topic" {
   description = "SNS topic for checkout events"
   
 }
+
+variable "order_ship_lambda_function_name" {
+  type        = string
+  description = "order ship lambda"
+ 
+}
