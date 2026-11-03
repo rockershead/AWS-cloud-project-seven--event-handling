@@ -110,7 +110,7 @@ resource "aws_lambda_event_source_mapping" "order_ship_event_source_mapping" {
     }
 
     depends_on = [
-        aws_sqs_queue.order_ship_sqs_queue,
+        aws_sqs_queue.order_shipped_sqs_queue,
         aws_lambda_function.order_ship_lambda
     ]
 }
