@@ -70,3 +70,10 @@ variable "event_handling_sns_checkout_topic" {
   description = "SNS topic for checkout events"
   
 }
+
+
+variable "lambda_timeout_value" {
+  type        = number
+  description = "timeout value for lambda functions"
+  
+}

@@ -11,4 +11,5 @@ module "event_handling" {
   event_handling_pipe_name               = var.event_handling_pipe_name
   event_handling_sns_order_shipped_topic = var.event_handling_sns_order_shipped_topic
   event_handling_sns_checkout_topic      = var.event_handling_sns_checkout_topic
+  lambda_timeout_value                   = var.lambda_timeout_value
 }
