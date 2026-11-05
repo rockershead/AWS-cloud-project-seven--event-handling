@@ -72,7 +72,7 @@ def add_event():
 
     item = {
         'event_type': event_type,
-        'last_checked_in_ts': str(last_checked_in_ts),
+        'last_checked_in_ts': last_checked_in_ts,
         'event': event,
        
     }
