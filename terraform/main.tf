@@ -50,10 +50,12 @@ module "lambda" {
   payment_queue_arn                       = module.sqs.payment_queue_arn
   order_shipped_queue_arn                 = module.sqs.order_shipped_queue_arn
   depends_on                              = [ module.sqs,module.db ]
+  
 }
 
 module "api_gateway" {
   source                                  = "./api_gateway"
   event_register_lambda_function_name     = module.lambda.event_register_lambda_function_name
   event_register_lambda_arn               = module.lambda.event_register_lambda_arn
+  account_id                              = module.lambda.account_id
 }

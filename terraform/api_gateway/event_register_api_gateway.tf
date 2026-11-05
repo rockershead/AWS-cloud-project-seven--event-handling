@@ -51,7 +51,7 @@ resource "aws_lambda_permission" "apigw_lambda_event_register" {
   function_name = var.event_register_lambda_function_name
   principal     = "apigateway.amazonaws.com"
 
-  source_arn    = "arn:aws:execute-api:ap-southeast-1:${data.aws_caller_identity.current_caller_for_event_register_lambda.account_id}:${aws_api_gateway_rest_api.event_handling_api.id}/prod/POST/events"
+  source_arn    = "arn:aws:execute-api:ap-southeast-1:${var.account_id}:${aws_api_gateway_rest_api.event_handling_api.id}/prod/POST/events"
 }
 
 
