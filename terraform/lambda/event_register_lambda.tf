@@ -105,7 +105,5 @@ data "aws_iam_policy_document" "event_register_lambda_role_permissions" {
     effect = "Allow"
   }
 
-  depends_on = [
-    aws_dynamodb_table.event_handling_table
-  ]
+  
 }

@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "order_ship_lambda_role_permissions" {
         ]
 
         resources   = [
-            aws_sqs_queue.order_shipped_sqs_queue.arn
+            var.order_shipped_queue_arn
         ]
 
         effect      = "Allow"
@@ -101,7 +101,7 @@ data "aws_iam_policy_document" "order_ship_lambda_role_permissions" {
 
 
 resource "aws_lambda_event_source_mapping" "order_ship_event_source_mapping" {
-    event_source_arn    = aws_sqs_queue.order_shipped_sqs_queue.arn
+    event_source_arn    = var.order_shipped_queue_arn
     function_name       = var.order_ship_lambda_function_name
     batch_size          = 1
 
@@ -110,7 +110,7 @@ resource "aws_lambda_event_source_mapping" "order_ship_event_source_mapping" {
     }
 
     depends_on = [
-        aws_sqs_queue.order_shipped_sqs_queue,
+        
         aws_lambda_function.order_ship_lambda
     ]
 }

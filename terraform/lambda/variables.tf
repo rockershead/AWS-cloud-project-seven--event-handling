@@ -5,27 +5,12 @@ variable "event_handling_table_name" {
 
 }
 
-variable "event_handling_partition_key_name" {
-
-  type        = string
-  description = "partition key for dynamodb table"
-
-
-}
-
 variable "region" {
   type        = string
   description = "aws region"
 
 }
 
-variable "event_handling_sort_key_name" {
-
-  type        = string
-  description = "sort key dynamodb table"
-
-
-}
 
 variable "event_register_lambda_function_name" {
   type        = string
@@ -56,35 +41,23 @@ variable "lambda_timeout_value" {
   description = "timeout value for lambda functions"
 }
 
-variable "event_handling_event_bus_name" {
-
-  type        = string
-  description = "event bus name"
-  
-}
-
-variable "event_handling_pipe_name" {
-
-  type        = string
-  description = "event handling pipe name"
-  
-
-}
-
-variable "event_handling_sns_order_shipped_topic" {
-  type        = string
-  description = "SNS topic for order shipped events"
-  
-}
-
-variable "event_handling_sns_checkout_topic" {
-  type        = string
-  description = "SNS topic for checkout events"
-  
-}
-
 variable "order_ship_lambda_function_name" {
   type        = string
   description = "order ship lambda"
  
+}
+
+variable "inventory_queue_arn" {
+  type        = string
+  description = "ARN of the SQS inventory queue"
+}
+
+variable "payment_queue_arn" {
+  type        = string
+  description = "ARN of the SQS payment queue"
+}
+
+variable "order_shipped_queue_arn" {
+  type        = string
+  description = "ARN of the SQS order shipped queue"
 }

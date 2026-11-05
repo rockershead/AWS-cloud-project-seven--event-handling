@@ -24,17 +24,14 @@ resource "aws_cloudwatch_event_rule" "checkout_sns_topic" {
 
 
 resource "aws_cloudwatch_event_target" "checkout_event_sns_topic_target" {
-  rule      = aws_cloudwatch_event_rule.checkout_sns_topic.name
+  rule           = aws_cloudwatch_event_rule.checkout_sns_topic.name
   event_bus_name = aws_cloudwatch_event_bus.event_handling_bus.name
-  arn       = aws_sns_topic.checkout_topic.arn
-  
-
-  depends_on = [ aws_sns_topic.checkout_topic  ]
+  arn            = var.sns_checkout_topic_arn
 }
 
 ## permission for eventbus to sns
 resource "aws_sns_topic_policy" "checkout_topic" {
-  arn    = aws_sns_topic.checkout_topic.arn
+  arn    = var.sns_checkout_topic_arn
   policy = data.aws_iam_policy_document.sns_topic_policy_checkout.json
 }
 
@@ -48,7 +45,7 @@ data "aws_iam_policy_document" "sns_topic_policy_checkout" {
       identifiers = ["events.amazonaws.com"]
     }
 
-    resources = [aws_sns_topic.checkout_topic.arn]
+    resources = [var.sns_checkout_topic_arn]
 
     condition {
       test     = "ArnEquals"
@@ -87,15 +84,12 @@ resource "aws_cloudwatch_event_rule" "order_shipped_sns_topic" {
 resource "aws_cloudwatch_event_target" "order_shipped_event_sns_topic_target" {
   rule           = aws_cloudwatch_event_rule.order_shipped_sns_topic.name
   event_bus_name = aws_cloudwatch_event_bus.event_handling_bus.name
-  arn            = aws_sns_topic.order_shipped_topic.arn
-  
-
-  depends_on = [ aws_sns_topic.order_shipped_topic  ]
+  arn            = var.sns_order_shipped_topic_arn
 }
 
 ## permission for eventbus to sns
 resource "aws_sns_topic_policy" "order_shipped_topic" {
-  arn    = aws_sns_topic.order_shipped_topic.arn
+  arn    = var.sns_order_shipped_topic_arn
   policy = data.aws_iam_policy_document.sns_topic_policy_order_shipped.json
 }
 
@@ -109,7 +103,7 @@ data "aws_iam_policy_document" "sns_topic_policy_order_shipped" {
       identifiers = ["events.amazonaws.com"]
     }
 
-    resources = [aws_sns_topic.order_shipped_topic.arn]
+    resources = [var.sns_order_shipped_topic_arn]
 
     condition {
       test     = "ArnEquals"

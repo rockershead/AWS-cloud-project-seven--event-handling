@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "event_pipe_role_permissions" {
     ]
 
     resources = [
-      aws_dynamodb_table.event_handling_table.stream_arn,
+      var.event_handling_table_stream_arn,
 
     ]
 
@@ -71,7 +71,7 @@ data "aws_iam_policy_document" "event_pipe_role_permissions" {
 resource "aws_pipes_pipe" "event_handling_pipe" {
   name     = var.event_handling_pipe_name
   role_arn = aws_iam_role.event_pipe_role.arn
-  source   = aws_dynamodb_table.event_handling_table.stream_arn
+  source   = var.event_handling_table_stream_arn
   target   = aws_cloudwatch_event_bus.event_handling_bus.arn
   
   // source parameter configuration for the DynamoDB stream is mandatory only for dynmodb stream

@@ -41,3 +41,4 @@ resource "aws_dynamodb_table" "event_handling_table" {
     ]
   }
 }
+

@@ -16,8 +16,8 @@ data "aws_iam_policy_document" "payment_sqs_queue_permissions" {
             identifiers = ["sns.amazonaws.com"]
         }
 
-        actions     = ["sqs:SendMessage"]
-        resources   = [aws_sqs_queue.payment_sqs_queue.arn]
+        actions         = ["sqs:SendMessage"]
+        resources       = [var.payment_queue_arn]
         condition   {
             test        = "ArnLike"
             variable    = "aws:SourceArn"
@@ -25,16 +25,17 @@ data "aws_iam_policy_document" "payment_sqs_queue_permissions" {
         }
     }
 
-    depends_on = [
+     depends_on = [
         
-        aws_sqs_queue.payment_sqs_queue,
         aws_sns_topic.checkout_topic
         
     ]
+
+  
 }
 
 resource "aws_sqs_queue_policy" "payment_sqs_queue_policy" {
-    queue_url   = aws_sqs_queue.payment_sqs_queue.id
+    queue_url   = var.payment_queue_url
     policy      = data.aws_iam_policy_document.payment_sqs_queue_permissions.json
 
     depends_on = [
@@ -57,7 +58,7 @@ data "aws_iam_policy_document" "inventory_sqs_queue_permissions" {
         }
 
         actions     = ["sqs:SendMessage"]
-        resources   = [aws_sqs_queue.inventory_sqs_queue.arn]
+        resources   = [var.inventory_queue_arn]
         condition   {
             test        = "ArnLike"
             variable    = "aws:SourceArn"
@@ -65,16 +66,17 @@ data "aws_iam_policy_document" "inventory_sqs_queue_permissions" {
         }
     }
 
-    depends_on = [
+      depends_on = [
         
-        aws_sqs_queue.inventory_sqs_queue,
         aws_sns_topic.checkout_topic
         
     ]
+
+   
 }
 
 resource "aws_sqs_queue_policy" "inventory_sqs_queue_policy" {
-    queue_url   = aws_sqs_queue.inventory_sqs_queue.id
+    queue_url   = var.inventory_queue_url
     policy      = data.aws_iam_policy_document.inventory_sqs_queue_permissions.json
 
     depends_on = [
@@ -96,7 +98,7 @@ data "aws_iam_policy_document" "notification_sqs_queue_permissions" {
         }
 
         actions     = ["sqs:SendMessage"]
-        resources   = [aws_sqs_queue.notification_sqs_queue.arn]
+        resources   = [var.notification_queue_arn]
         condition   {
             test        = "ArnLike"
             variable    = "aws:SourceArn"
@@ -105,15 +107,12 @@ data "aws_iam_policy_document" "notification_sqs_queue_permissions" {
     }
 
     depends_on = [
-        
-        aws_sqs_queue.notification_sqs_queue,
         aws_sns_topic.checkout_topic
-        
     ]
 }
 
 resource "aws_sqs_queue_policy" "notification_sqs_queue_policy" {
-    queue_url   = aws_sqs_queue.notification_sqs_queue.id
+    queue_url   = var.notification_queue_url
     policy      = data.aws_iam_policy_document.notification_sqs_queue_permissions.json
 
     depends_on = [
@@ -127,26 +126,26 @@ resource "aws_sqs_queue_policy" "notification_sqs_queue_policy" {
 resource "aws_sns_topic_subscription" "checkout_topic_payment_sqs_subscription" {
   topic_arn = aws_sns_topic.checkout_topic.arn
   protocol  = "sqs"
-  endpoint  = aws_sqs_queue.payment_sqs_queue.arn
+  endpoint  = var.payment_queue_arn
 
-  depends_on = [aws_sqs_queue.payment_sqs_queue]  
+  
   
 }
 
 resource "aws_sns_topic_subscription" "checkout_topic_inventory_sqs_subscription" {
   topic_arn = aws_sns_topic.checkout_topic.arn
   protocol  = "sqs"
-  endpoint  = aws_sqs_queue.inventory_sqs_queue.arn
+  endpoint  = var.inventory_queue_arn
 
-  depends_on = [aws_sqs_queue.inventory_sqs_queue]  
+  
   
 }
 
 resource "aws_sns_topic_subscription" "checkout_topic_notification_sqs_subscription" {
   topic_arn = aws_sns_topic.checkout_topic.arn
   protocol  = "sqs"
-  endpoint  = aws_sqs_queue.notification_sqs_queue.arn
+  endpoint  = var.notification_queue_arn
 
-  depends_on = [aws_sqs_queue.notification_sqs_queue]  
+   
   
 }
