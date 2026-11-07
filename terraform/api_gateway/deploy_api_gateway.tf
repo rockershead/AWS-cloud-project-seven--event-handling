@@ -5,14 +5,6 @@ resource "aws_api_gateway_deployment" "api_deployment" {
   depends_on = [
     aws_api_gateway_integration.lambda_integration_event_register
   ]
-  
-
-  /*depends_on = [
-    aws_api_gateway_integration.lambda_integration_login,
-    aws_api_gateway_integration.lambda_integration_register,
-    aws_api_gateway_integration.lambda_integration_update_check_in_time,
-    aws_api_gateway_integration.lambda_integration_input_config
-  ]*/
 
 
   # So that only when any of the API Gateway resources change, it will trigger a redeployment
