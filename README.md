@@ -23,3 +23,8 @@ Highlights:
 -  Usage of many sqs topics subscribing to one SNS topic is an example of a fan out model
 - Take note event bridge pipe is a one to one connection and event bus can connect to many services at a time.
 - Event bus cannot have  dynamodb as a source, only eventbridge can. That is why we have to use both together.
+
+
+Diagram:
+
+<img width="1390" height="791" alt="e-commerce_event_handling_aws drawio" src="https://github.com/user-attachments/assets/1f1941d5-5037-435c-ab93-08f940ac419f" />
